@@ -12,11 +12,23 @@ const posts = [];
     res.send({ posts: posts });
   });
 
-  app.post("/posts", (req, res) => {
+  app.post("/posts", async (req, res) => {
     const post = req.body;
     post.id = randomBytes(4).toString("hex");
     posts.push(post);
     res.send({ posts: posts });
+
+    try {
+      await fetch("http://localhost:4001/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId: post.id }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   app.listen({ port: 4000 }, () => {
