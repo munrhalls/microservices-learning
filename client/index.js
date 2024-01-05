@@ -1,1 +1,3 @@
-console.log("hey???");
+const addPost = function (e) {
+  console.log(e);
+};
