@@ -1,3 +1,5 @@
+import CommentsList from "./CommentsList";
+
 const PostList = ({ posts }) => {
   console.log(posts);
   return (
@@ -12,6 +14,7 @@ const PostList = ({ posts }) => {
           >
             <div className="card-body">
               <h3>{post.title}</h3>
+              <CommentsList comments={post.comments} />
             </div>
           </div>
         ))}

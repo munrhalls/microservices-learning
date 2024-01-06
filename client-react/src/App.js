@@ -32,7 +32,7 @@ const App = function () {
         <PostList posts={posts} />
       </div>
       {/* 
-      posts list 
+
       comments per post
       add comment
       */}
