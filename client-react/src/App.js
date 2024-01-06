@@ -1,7 +1,22 @@
+import CreatePost from "./CreatePost";
 const App = function () {
   return (
-    <div>
-      <h1>Hello from React</h1>
+    <div className="container p-5">
+      <div className="row">
+        <div className="col-8">
+          <h1>Blog</h1>
+        </div>
+        <div className="col-6">
+          <CreatePost />
+        </div>
+      </div>
+
+      {/* 
+      add post form
+      posts list 
+      comments per post
+      add comment
+      */}
     </div>
   );
 };
