@@ -4,6 +4,8 @@ const CreatePost = () => {
   const [title, setTitle] = useState("");
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       await fetch("http://localhost:4000/posts", {
         method: "POST",
