@@ -9,18 +9,19 @@ let posts = [];
 
   const data = await fetch("http://localhost:4000/posts");
   posts = await data.json();
-
+  // SENDING EFFICIENT-REQUESTS FORMAT DATA
   app.get("/posts", async (req, res) => {
     res.send(posts);
   });
-
+  // RECEIVING EVENTS FROM EVENT BUS
   app.post("/events", async (req, res) => {
-    alert("RECEIVED EVENT");
+    console.log("QUERY SERVICE: RECEIVING EVENT FROM EVENT BUS");
+    console.log("QUERY SERVICE: RECEIVING EVENT FROM EVENT BUS");
+    console.log("QUERY SERVICE: RECEIVING EVENT FROM EVENT BUS");
+    console.log("QUERY SERVICE: RECEIVING EVENT FROM EVENT BUS");
+
     const { type, data } = req.body;
     console.log("Received event:", type);
-    res.send("ok");
-    // receive event: PostCreated
-    // add new post to posts array
   });
 
   app.listen({ port: 4005 }, () => {

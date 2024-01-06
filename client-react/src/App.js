@@ -7,7 +7,7 @@ const App = function () {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("http://localhost:4000/posts");
+      const res = await fetch("http://localhost:4005/posts");
       const { posts } = await res.json();
       setPosts(posts);
     };

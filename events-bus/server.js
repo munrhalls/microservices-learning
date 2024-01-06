@@ -2,6 +2,10 @@ const fastify = require("fastify");
 const app = fastify();
 
 app.post("/events", async (req, res) => {
+  // EVENT BUS SENDS EVENT TO POSTS SERVICE
+  console.log("EVENT BUS: SENDING EVENT TO QUERY SERVICE");
+  const { type, data } = req.body;
+  console.log("EVENT BUS TYPE: ", type);
   if (req.body.type === "PostCreated") {
     try {
       await fetch("http://localhost:4005/events", {
@@ -9,10 +13,10 @@ app.post("/events", async (req, res) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           type: "PostCreated",
           data: req.body.data,
-        },
+        }),
       });
       console.log("Event 'PostCreated' received and re-sent to query-service");
     } catch (error) {
