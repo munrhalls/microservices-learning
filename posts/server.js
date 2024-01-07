@@ -2,10 +2,18 @@ const fastify = require("fastify");
 const app = fastify();
 const cors = require("@fastify/cors");
 const { randomBytes } = require("crypto");
+const axios = require("axios");
 
 const posts = [];
 
-(async function () {
+const updatePost = (req) => {
+  const post = req.body;
+  post.id = randomBytes(4).toString("hex");
+  post.comments = [];
+  return post;
+};
+
+const main = async function () {
   await app.register(cors);
 
   app.get("/posts", (req, res) => {
@@ -13,35 +21,20 @@ const posts = [];
     res.send({ posts: posts });
   });
 
-  // ADD POST IN POSTS SERVICE
   app.post("/posts", async (req, res) => {
     console.log("POSTS SERVICE: Adding post in posts service on POST request");
-    console.log(req.body);
-    const post = req.body;
-    post.id = randomBytes(4).toString("hex");
-    post.comments = [];
+    const post = updatePost(req);
+    const postUpdate = JSON.stringify(post);
     posts.push(post);
-    res.send(JSON.stringify(post));
+    res.send(postUpdate);
+    await axios.post("http://localhost:5000/events", postUpdate);
 
-    // SEND EVENT 'POST CREATED' TO EVENT BUS
-    try {
-      await fetch("http://localhost:5000/events", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "PostCreated",
-          data: post,
-        }),
-      });
-    } catch (err) {
-      console.error(err);
-    }
     console.log("POSTS SERVICE: sent PostCreated event *TO --->* EVENT BUS");
   });
 
   app.listen({ port: 4000 }, () => {
     console.log("Posts listening on port 4000");
   });
-})();
+};
+
+main();
