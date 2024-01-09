@@ -1,15 +1,16 @@
 import CreatePost from "./CreatePost";
 import PostList from "./PostList";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const App = function () {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("http://localhost:4005/posts");
-      const posts = await res.json();
-      setPosts(posts);
+      const res = await axios.get("http://localhost:4005/posts");
+
+      setPosts(res.data);
     };
 
     fetchPosts();

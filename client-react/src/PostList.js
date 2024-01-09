@@ -1,7 +1,9 @@
 import CommentsList from "./CommentsList";
+import CreateComment from "./CreateComment";
 
 const PostList = ({ posts }) => {
   console.log(posts);
+
   return (
     <div>
       <h1>Posts</h1>
@@ -15,6 +17,7 @@ const PostList = ({ posts }) => {
             <div className="card-body">
               <h3>{post.title}</h3>
               <CommentsList comments={post.comments} />
+              <CreateComment postId={post.id} />
             </div>
           </div>
         ))}

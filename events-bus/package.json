@@ -2,14 +2,15 @@
   "name": "events-bus",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "events.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon events.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.5",
     "fastify": "^4.25.2",
     "nodemon": "^3.0.2"
   }

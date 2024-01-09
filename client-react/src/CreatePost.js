@@ -1,18 +1,18 @@
 import { useState } from "react";
+import axios from "axios";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    await axios
+      .post("http://localhost:4000/posts", {
+        title: title,
+      })
+      .catch((err) => console.log(err));
 
-    try {
-      await fetch("http://localhost:4000/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: title }),
-      });
-    } catch {}
+    setTitle("");
   };
 
   return (
