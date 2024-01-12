@@ -8,9 +8,13 @@ const App = function () {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("http://localhost:4005/posts");
-
-      setPosts(res.data);
+      const res = await axios
+        .get("http://localhost:4005/posts")
+        .catch((err) => {
+          console.error("Error: ", err);
+        });
+      console.log("res", res);
+      if (res) setPosts(res.data);
     };
 
     fetchPosts();

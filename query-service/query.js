@@ -1,28 +1,28 @@
 const fastify = require("fastify");
 const app = fastify();
 const cors = require("@fastify/cors");
-
-const getPosts = async () => {
-  const data = await fetch("http://localhost:4000/posts");
-  const { posts } = await data.json();
-  return posts;
-};
-
-// const getComments = async () => {
-//   const data = await fetch("http://localhost:4001/comments");
-//   const { comments } = await data.json();
-//   return comments;
-// };
+const axios = require("axios");
 
 const main = async function () {
   await app.register(cors);
-  const posts = await getPosts();
-  // const comments = await getComments();
-  posts.forEach((post) => {
-    console.log(post);
-    // post.comments = comments[post.id];
+  const res = await axios.get("http://localhost:5000/events");
+  const events = res.data;
+  console.log(res.data);
+
+  let posts = [];
+
+  events.forEach((event) => {
+    const { type, data } = event;
+
+    if (type === "PostCreated") {
+      posts.push(data);
+    }
+
+    if (type === "CommentCreated") {
+      const post = posts.find((post) => post.id === data.id);
+      post.comments.push(data.comment);
+    }
   });
-  console.log(posts);
 
   app.get("/posts", async (req, res) => {
     res.send(posts);
@@ -35,6 +35,7 @@ const main = async function () {
       posts.push(data);
       res.send({});
     }
+
     if (type === "CommentCreated") {
       const post = posts.find((post) => post.id === data.id);
       post.comments.push(data.comment);

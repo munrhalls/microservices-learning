@@ -1,28 +1,27 @@
+const cors = require("@fastify/cors");
+const axios = require("axios");
+const { randomBytes } = require("crypto");
 const app = require("fastify")({
   logger: true,
 });
-const cors = require("@fastify/cors");
-const { randomBytes } = require("crypto");
-const axios = require("axios");
-
-const posts = [];
-
-const updatePost = (req) => {
-  const post = req.body;
-  post.id = randomBytes(4).toString("hex");
-  post.comments = [];
-  return post;
-};
 
 const main = async function () {
   await app.register(cors);
+  const res = await axios.get("http://localhost:5000/events");
+  const events = res.data;
+
+  const posts = events
+    .filter((event) => event.type === "PostCreated")
+    .map((event) => event.data);
 
   app.get("/posts", (req, res) => {
     res.send({ posts: posts });
   });
 
   app.post("/posts", async (req, res) => {
-    const post = updatePost(req);
+    const post = req.body;
+    post.id = randomBytes(4).toString("hex");
+    post.comments = [];
 
     await axios.post("http://localhost:5000/events", {
       type: "PostCreated",
@@ -33,7 +32,7 @@ const main = async function () {
   });
 
   app.post("/events", (req, res) => {
-    res.send({});
+    res.status(200).send({});
   });
 
   app.listen({ port: 4000 }, function (err, _) {
